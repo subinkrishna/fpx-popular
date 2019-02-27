@@ -30,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Retrofit based implementation of Photo API
  */
-class NetworkApi : PhotoApi {
+class NetworkPhotoApi : PhotoApi {
 
     companion object {
 

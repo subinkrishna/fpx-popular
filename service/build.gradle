@@ -11,6 +11,8 @@ android {
         versionName "$versions.versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // Note:
+        // Configure the Consumer API key in global gradle.properties
         buildConfigField 'String', 'API_KEY', API_KEY
     }
 
