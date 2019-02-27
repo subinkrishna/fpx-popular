@@ -1,27 +1,26 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.targetSdk
     defaultConfig {
-        applicationId "com.subinkrishna.fpx"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode
         versionName "$versions.versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'API_KEY', API_KEY
     }
+
     buildTypes {
-        debug {
-            minifyEnabled false
-            shrinkResources false
-        }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,30 +29,21 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":service")
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     // Android X
     implementation "androidx.appcompat:appcompat:$versions.appCompat"
-    implementation "androidx.recyclerview:recyclerview:$versions.recyclerView"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    implementation "androidx.core:core-ktx:$versions.ktxCore"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.arch"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.arch"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$versions.arch"
-
-    // UI
-    implementation "com.github.bumptech.glide:glide:$versions.glide"
-    implementation"com.subinkrishna:aspect:$versions.aspect"
 
     // Rx
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxJava"
-    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
 
-    // Performance / Bug tracking / Logging
-    implementation "com.jakewharton.timber:timber:$versions.timber"
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
+    // Networking
+    implementation "com.google.code.gson:gson:$versions.gson"
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 
     // Testing
     testImplementation "junit:junit:$versions.junit"

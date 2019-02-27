@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx
+package com.subinkrishna.fpx.service
 
-import android.app.Application
-import com.squareup.leakcanary.LeakCanary
-import timber.log.Timber
+import com.subinkrishna.fpx.service.model.PhotoStream
+import com.subinkrishna.fpx.service.model.Photo
+import io.reactivex.Single
 
-class App : Application() {
+/** Api interface definition */
+interface PhotoApi {
 
-    override fun onCreate() {
-        super.onCreate()
+    /** Returns the page of photo feed for the given feature */
+    fun photos(feature: String, page: Int, resultsPerPage: Int): Single<PhotoStream>
 
-        // Leak canary
-        if (LeakCanary.isInAnalyzerProcess(this)) return
-        LeakCanary.install(this)
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-    }
-
+    /** Returns the photo by id */
+    fun photoById(id: String): Single<Photo>
 }
