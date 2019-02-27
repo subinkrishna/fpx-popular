@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text" />
+
+    <style name="Text.Small">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Text.Medium">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Text.Large">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Default toolbar style -->
+    <style name="Text.ToolbarTitle">
+        <item name="android:textSize">19sp</item>
+    </style>
+
+</resources>
