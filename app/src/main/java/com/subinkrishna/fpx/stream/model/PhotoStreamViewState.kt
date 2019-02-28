@@ -13,29 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.service
+package com.subinkrishna.fpx.stream.model
 
-import com.subinkrishna.fpx.service.model.PhotoStream
+import androidx.paging.PagedList
 import com.subinkrishna.fpx.service.model.Photo
-import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
-/** A Retrofit service definition for photo service */
-interface PhotoService {
+/** Photo stream view state */
+data class ViewState(
+    val isLoading: Boolean = false,
+    val items: PagedList<Photo>? = null,
+    val error: Error? = null
+)
 
-    @GET("photos")
-    fun photos(
-        @Query("feature") feature: String,
-        @Query("page") page: Int,
-        @Query("rpp") resultsPerPage: Int,
-        @Query("image_size") imageSize: String
-    ): Single<PhotoStream>
+/** Events */
+sealed class Event {
+    object Load : Event()
+    object Refresh : Event()
+}
 
-    @GET("photos/{id}")
-    fun photoById(
-        @Path("id") id: String,
-        @Query("image_size") imageSize: String
-    ): Single<Photo>
+/** Error */
+sealed class Error {
+    object Network : Error()
+    object Unknown : Error()
 }

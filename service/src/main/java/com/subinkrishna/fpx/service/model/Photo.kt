@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
  * dimensions, EXIF, user, location & image details
  */
 data class Photo(
-    val id: String,
+    val id: Long,
     val name: String,
     val width: Int,
     val height: Int,
@@ -40,7 +40,7 @@ data class Photo(
     val iso: String?,
     val aperture: String?,
     @SerializedName("shutter_speed") val shutterSpeed: String?,
-    val latitude: Float,
-    val longitude: Float
+    val latitude: Float?,
+    val longitude: Float?
 )
 

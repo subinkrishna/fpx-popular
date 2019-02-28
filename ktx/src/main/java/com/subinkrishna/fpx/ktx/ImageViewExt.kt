@@ -83,7 +83,7 @@ fun ImageView.setImageUrl(
     }
 
     val requestOptions = RequestOptions().apply {
-        diskCacheStrategy(DiskCacheStrategy.ALL)
+        diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         if (placeHolderRes != -1) placeholder(placeHolderRes)
         if (errorDrawableRes != -1) error(errorDrawableRes)
         if (centerCrop) centerCrop() else fitCenter()

@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName
 
 /** Type that represents a user, unique identifiers & avatar  */
 data class User(
-    val id: String,
+    val id: Long,
     val username: String,
     @SerializedName("fullname") val name: String,
     @SerializedName("userpic_https_url") val avatar: String

@@ -17,9 +17,8 @@ package com.subinkrishna.fpx.service.impl
 
 import com.subinkrishna.fpx.service.BuildConfig
 import com.subinkrishna.fpx.service.PhotoApi
-import com.subinkrishna.fpx.service.PhotoService
-import com.subinkrishna.fpx.service.model.PhotoStream
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.service.model.PhotoStream
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,6 +37,7 @@ class NetworkPhotoApi : PhotoApi {
         private const val BASE_URL = "https://api.500px.com/v1/"
 
         // Defaults
+        // todo: may need to pick the image sizes based on device's display
         private const val IMAGE_SIZES = "21,1080"
 
         // Params
