@@ -27,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
+import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.model.ViewState
+import timber.log.Timber
 
 /**
  * Photo stream activity implementation. This activity renders the
@@ -40,8 +42,11 @@ class PhotoStreamActivity : AppCompatActivity() {
 
     private lateinit var photoGrid: RecyclerView
     private lateinit var progressIndicator: ProgressBar
+    private lateinit var pagedLightbox: PagedImageLightboxView
 
-    private val streamAdapter = PhotoStreamAdapter().apply {
+    private val streamAdapter = PhotoStreamAdapter(
+        onItemClick = View.OnClickListener { handleItemClick(it) }
+    ).apply {
         setHasStableIds(true)
     }
 
@@ -72,6 +77,7 @@ class PhotoStreamActivity : AppCompatActivity() {
     private fun render(state: ViewState) {
         progressIndicator.isVisible = state.isLoading
         streamAdapter.submitList(state.items)
+        pagedLightbox.bind(state.items)
     }
 
     private fun configureUi() {
@@ -95,5 +101,13 @@ class PhotoStreamActivity : AppCompatActivity() {
         }
 
         progressIndicator = findViewById(R.id.progressIndicator)
+        pagedLightbox = findViewById(R.id.pagedLightbox)
+    }
+
+    private fun handleItemClick(v: View) {
+        val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
+        val position = lm.getPosition(v)
+        pagedLightbox.isVisible = true
+        pagedLightbox.currentItem = position
     }
 }

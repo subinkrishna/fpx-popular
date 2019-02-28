@@ -51,7 +51,7 @@ class PhotoStreamViewModel(
 
     init {
         stateLive.value = ViewState()
-        disposables += api.photos(feature, 1, 20)
+        disposables += api.photos(feature, 1, 40)
             .toObservable()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

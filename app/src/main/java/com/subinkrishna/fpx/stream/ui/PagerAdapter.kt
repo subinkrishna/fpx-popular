@@ -15,26 +15,20 @@
  */
 package com.subinkrishna.fpx.stream.ui
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.service.model.Photo
 
-/** Photo stream adapter */
-class PhotoStreamAdapter(
-    private val onItemClick: View.OnClickListener
-) : ListAdapter<Photo, RecyclerView.ViewHolder>(DIFF) {
+/** Photo pager adapter */
+class PagerAdapter : ListAdapter<Photo, ImageLightboxItemViewHolder>(DIFF) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ImageItemViewHolder.create(parent).also {
-            it.itemView.setOnClickListener(onItemClick)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageLightboxItemViewHolder {
+        return ImageLightboxItemViewHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ImageItemViewHolder).bind(getItem(position))
+    override fun onBindViewHolder(holder: ImageLightboxItemViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1L
@@ -43,6 +37,7 @@ class PhotoStreamAdapter(
 }
 
 /** Photo item diff */
+// todo: move to a common class
 private val DIFF = object : DiffUtil.ItemCallback<Photo>() {
     override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
         return oldItem.id == newItem.id
