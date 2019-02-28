@@ -5,7 +5,7 @@
     <color name="darkGrey">@android:color/darker_gray</color>
     <color name="text">#252525</color>
 
-    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimary">@color/offWhite</color>
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#1565C0</color>
 </resources>
