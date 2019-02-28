@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx
+package com.subinkrishna.fpx.stream.model
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.subinkrishna.fpx.service.model.Photo
 
-class MainActivity : AppCompatActivity() {
+/** Photo stream view state */
+data class ViewState(
+    val isLoading: Boolean = false,
+    val items: List<Photo>? = null,
+    val error: Error? = null
+)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+/** Error */
+sealed class Error {
+    object Network : Error()
+    object Unknown : Error()
 }

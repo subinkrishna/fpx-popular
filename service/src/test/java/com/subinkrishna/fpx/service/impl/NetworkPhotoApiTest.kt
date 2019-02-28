@@ -39,7 +39,7 @@ class NetworkPhotoApiTest {
 
         // Test photo
         val firstPhoto = stream.photos[0]
-        assertThat(firstPhoto.id).isEqualTo("296328931")
+        assertThat(firstPhoto.id).isEqualTo(296328931L)
         assertThat(firstPhoto.name).isEqualTo("Natasha")
         assertThat(firstPhoto.shutterSpeed).isEqualTo("1/320")
         assertThat(firstPhoto.rating).isEqualTo(99.8f)
@@ -49,7 +49,7 @@ class NetworkPhotoApiTest {
         assertThat(firstPhoto.images[0].size).isEqualTo(21)
 
         // User
-        assertThat(firstPhoto.user.id).isEqualTo("777395")
+        assertThat(firstPhoto.user.id).isEqualTo(777395L)
         assertThat(firstPhoto.user.username).isEqualTo("SeanArcher")
     }
 }

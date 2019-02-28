@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
  * dimensions, EXIF, user, location & image details
  */
 data class Photo(
-    val id: String,
+    val id: Long,
     val name: String,
     val width: Int,
     val height: Int,
