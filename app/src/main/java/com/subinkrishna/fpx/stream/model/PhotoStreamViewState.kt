@@ -15,14 +15,21 @@
  */
 package com.subinkrishna.fpx.stream.model
 
+import androidx.paging.PagedList
 import com.subinkrishna.fpx.service.model.Photo
 
 /** Photo stream view state */
 data class ViewState(
     val isLoading: Boolean = false,
-    val items: List<Photo>? = null,
+    val items: PagedList<Photo>? = null,
     val error: Error? = null
 )
+
+/** Events */
+sealed class Event {
+    object Load : Event()
+    object Refresh : Event()
+}
 
 /** Error */
 sealed class Error {

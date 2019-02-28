@@ -10,7 +10,8 @@
             android:id="@+id/photoGrid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/grid_spacing"
+            android:paddingStart="@dimen/grid_spacing"
+            android:paddingEnd="@dimen/grid_spacing"
             android:layout_marginTop="?attr/actionBarSize"
             android:clipToPadding="false"/>
 

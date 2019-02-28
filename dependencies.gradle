@@ -14,6 +14,7 @@ ext.versions = [
         ktxLifecycle    : '2.0.0',
         constraintLayout: '2.0.0-alpha3',
         viewPager       : '1.0.0-alpha01',
+        pagingKtx       : '2.1.0',
 
         rxJava          : '2.2.0',
         rxAndroid       : '2.1.0',

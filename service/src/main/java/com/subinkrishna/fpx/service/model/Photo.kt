@@ -40,7 +40,7 @@ data class Photo(
     val iso: String?,
     val aperture: String?,
     @SerializedName("shutter_speed") val shutterSpeed: String?,
-    val latitude: Float,
-    val longitude: Float
+    val latitude: Float?,
+    val longitude: Float?
 )
 

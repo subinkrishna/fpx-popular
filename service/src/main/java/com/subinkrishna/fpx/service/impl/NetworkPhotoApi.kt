@@ -17,7 +17,6 @@ package com.subinkrishna.fpx.service.impl
 
 import com.subinkrishna.fpx.service.BuildConfig
 import com.subinkrishna.fpx.service.PhotoApi
-import com.subinkrishna.fpx.service.PhotoService
 import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.service.model.PhotoStream
 import io.reactivex.Single
@@ -47,7 +46,7 @@ class NetworkPhotoApi : PhotoApi {
         // Client builder
         private val httpClientBuilder by lazy {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             }
 
             return@lazy OkHttpClient.Builder().apply {

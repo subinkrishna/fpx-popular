@@ -19,6 +19,8 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -27,10 +29,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
-import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.model.ViewState
-import timber.log.Timber
 
 /**
  * Photo stream activity implementation. This activity renders the
@@ -60,6 +60,8 @@ class PhotoStreamActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_stream)
+
+        configureToolbar()
         configureUi()
 
         // Forcing the recycler view to scroll to 0th position
@@ -78,6 +80,13 @@ class PhotoStreamActivity : AppCompatActivity() {
         progressIndicator.isVisible = state.isLoading
         streamAdapter.submitList(state.items)
         pagedLightbox.bind(state.items)
+    }
+
+    private fun configureToolbar() {
+        setSupportActionBar(findViewById(R.id.toolbar))
+        findViewById<TextView>(R.id.toolbarTitleText).setText(R.string.app_name)
+        setTitle(R.string.app_name)
+        supportActionBar?.title = ""
     }
 
     private fun configureUi() {
@@ -105,9 +114,11 @@ class PhotoStreamActivity : AppCompatActivity() {
     }
 
     private fun handleItemClick(v: View) {
+        /*
         val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
         val position = lm.getPosition(v)
         pagedLightbox.isVisible = true
         pagedLightbox.currentItem = position
+        */
     }
 }

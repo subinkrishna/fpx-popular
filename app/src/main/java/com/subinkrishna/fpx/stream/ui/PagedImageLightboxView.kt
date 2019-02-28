@@ -20,6 +20,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import androidx.paging.PagedList
 import androidx.viewpager2.widget.ViewPager2
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.service.model.Photo
@@ -52,7 +53,7 @@ class PagedImageLightboxView @JvmOverloads constructor(
         closeButton = findViewById(R.id.closeButton)
     }
 
-    fun bind(items: List<Photo>?) {
+    fun bind(items: PagedList<Photo>?) {
         pagerAdapter.submitList(items)
     }
 

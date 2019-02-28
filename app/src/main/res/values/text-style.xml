@@ -17,7 +17,7 @@
 
     <!-- Default toolbar style -->
     <style name="Text.ToolbarTitle">
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

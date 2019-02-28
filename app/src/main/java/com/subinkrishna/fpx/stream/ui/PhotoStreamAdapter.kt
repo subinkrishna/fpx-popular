@@ -17,15 +17,17 @@ package com.subinkrishna.fpx.stream.ui
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.stream.ui.vh.ImageItemViewHolder
 
 /** Photo stream adapter */
 class PhotoStreamAdapter(
     private val onItemClick: View.OnClickListener
-) : ListAdapter<Photo, RecyclerView.ViewHolder>(DIFF) {
+) : PagedListAdapter<Photo, RecyclerView.ViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ImageItemViewHolder.create(parent).also {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.service
+package com.subinkrishna.fpx.service.impl
 
 import com.subinkrishna.fpx.service.model.PhotoStream
 import com.subinkrishna.fpx.service.model.Photo

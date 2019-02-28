@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.stream.ui
+package com.subinkrishna.fpx.stream.ui.vh
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,7 +46,7 @@ class ImageItemViewHolder(val v: AspectRatioImageView) : RecyclerView.ViewHolder
             else -> item.width.toFloat() / item.height.toFloat()
         }
 
-        Timber.d("bind: ${item?.width} x ${item?.height} = $aspectRatio, $url")
+        // Timber.d("bind: ${item?.width} x ${item?.height} = $aspectRatio, $url")
 
         v.apply {
             ratio(aspectRatio)

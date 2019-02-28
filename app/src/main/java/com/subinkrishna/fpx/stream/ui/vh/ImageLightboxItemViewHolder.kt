@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.stream.ui
+package com.subinkrishna.fpx.stream.ui.vh
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.stream.ui.ImageLightboxView
 
 /**
  * ViewHolder for image items in the photo stream

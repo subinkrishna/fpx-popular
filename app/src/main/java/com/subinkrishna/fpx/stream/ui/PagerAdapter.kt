@@ -16,12 +16,14 @@
 package com.subinkrishna.fpx.stream.ui
 
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.stream.ui.vh.ImageLightboxItemViewHolder
 
 /** Photo pager adapter */
-class PagerAdapter : ListAdapter<Photo, ImageLightboxItemViewHolder>(DIFF) {
+class PagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageLightboxItemViewHolder {
         return ImageLightboxItemViewHolder.create(parent)
