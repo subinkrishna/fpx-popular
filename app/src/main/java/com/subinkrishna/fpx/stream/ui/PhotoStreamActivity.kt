@@ -15,110 +15,80 @@
  */
 package com.subinkrishna.fpx.stream.ui
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.subinkrishna.fpx.R
-import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
-import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
-import com.subinkrishna.fpx.stream.model.ViewState
+import timber.log.Timber
 
 /**
  * Photo stream activity implementation. This activity renders the
  * paginated photo stream as a grid.
  */
-class PhotoStreamActivity : AppCompatActivity() {
+class PhotoStreamActivity : AppCompatActivity(),
+    PhotoStreamFragment.Callback,
+    LightboxFragment.Callback {
 
-    private val gridSpacing by lazy { resources.getDimension(R.dimen.grid_spacing).toInt() }
-
-    private lateinit var photoGrid: RecyclerView
-    private lateinit var progressIndicator: ProgressBar
-    private lateinit var pagedLightbox: PagedImageLightboxView
-
-    private val streamAdapter = PhotoStreamAdapter(
-        onItemClick = View.OnClickListener { handleItemClick(it) }
-    ).apply {
-        setHasStableIds(true)
-    }
-
-    private val viewModel by lazy {
-        val factory = PhotoStreamViewModel.Factory(
-            app = application,
-            api = NetworkPhotoApi())
-        ViewModelProviders.of(this, factory)[PhotoStreamViewModel::class.java]
-    }
+    // Holds the last known lightbox position
+    // This is used by the photo grid to scroll to the given position
+    var lastKnownLightboxPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_stream)
 
-        configureToolbar()
-        configureUi()
-
-        // Forcing the recycler view to scroll to 0th position
-        // to avoid SGLM's gap filling feature that causes
-        // views to move around/slide. May need to find a better way.
-        photoGrid.post { photoGrid.scrollToPosition(0) }
-
-        // Observe view state & render the changes as the arrive
-        viewModel.viewStateLive().observe(this, Observer { render(it) })
-    }
-
-
-    // Internal methods
-
-    private fun render(state: ViewState) {
-        progressIndicator.isVisible = state.isLoading
-        streamAdapter.submitList(state.items)
-        pagedLightbox.bind(state.items)
-    }
-
-    private fun configureToolbar() {
-        setSupportActionBar(findViewById(R.id.toolbar))
-        findViewById<TextView>(R.id.toolbarTitleText).setText(R.string.app_name)
-        setTitle(R.string.app_name)
-        supportActionBar?.title = ""
-    }
-
-    private fun configureUi() {
-        // todo:
-        // May need to setup Glide's PreloadModelProvider to prefetch
-        // images
-        photoGrid = findViewById<RecyclerView>(R.id.photoGrid).apply {
-            setHasFixedSize(true)
-            adapter = streamAdapter
-            layoutManager = StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL)
-            addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(
-                    outRect: Rect, view: View,
-                    parent: RecyclerView, state: RecyclerView.State
-                ) {
-                    outRect.set(gridSpacing, gridSpacing, gridSpacing, gridSpacing)
-                }
-            })
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.container, PhotoStreamFragment(), "grid")
+                .commit()
+        } else {
+            val f = supportFragmentManager.findFragmentByTag("grid")
+            Timber.d("--> $f")
         }
-
-        progressIndicator = findViewById(R.id.progressIndicator)
-        pagedLightbox = findViewById(R.id.pagedLightbox)
     }
 
-    private fun handleItemClick(v: View) {
-        /*
-        val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
-        val position = lm.getPosition(v)
-        pagedLightbox.isVisible = true
-        pagedLightbox.currentItem = position
-        */
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
+        if (currentFragment is LightboxFragment) {
+            lastKnownLightboxPosition = currentFragment.currentItem
+        }
+        super.onBackPressed()
+    }
+
+    // PhotoStreamFragment.Callback
+
+    override fun onItemClick(v: View, position: Int) {
+        // Launch the lightbox on selecting an item
+        supportFragmentManager
+            .beginTransaction()
+            .setReorderingAllowed(true)
+            .setCustomAnimations(
+                R.anim.anim_lightbox_enter,
+                0, 0,
+                R.anim.anim_lightbox_exit)
+            .replace(R.id.container, LightboxFragment.create(position))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun startPosition(): Int = lastKnownLightboxPosition
+
+
+    // LightboxFragment.Callback
+
+    override fun onPageChange(position: Int) {
+        lastKnownLightboxPosition = position
+    }
+
+    override fun onClose() {
+        // Get the current lightbox position
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
+        if (currentFragment is LightboxFragment) {
+            lastKnownLightboxPosition = currentFragment.currentItem
+        }
+        // And pop the back stack to go back to grid
+        supportFragmentManager.popBackStack()
     }
 }

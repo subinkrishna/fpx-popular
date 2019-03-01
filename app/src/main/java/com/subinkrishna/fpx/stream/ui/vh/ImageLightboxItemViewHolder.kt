@@ -18,7 +18,7 @@ package com.subinkrishna.fpx.stream.ui.vh
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.service.model.Photo
-import com.subinkrishna.fpx.stream.ui.ImageLightboxView
+import com.subinkrishna.fpx.stream.ui.view.ImageLightboxView
 
 /**
  * ViewHolder for image items in the photo stream

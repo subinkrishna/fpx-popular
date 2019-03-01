@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.stream.ui
+package com.subinkrishna.fpx.stream.ui.view
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.service.model.Photo
-import com.subinkrishna.fpx.stream.ui.vh.ImageLightboxItemViewHolder
+import com.subinkrishna.fpx.stream.ui.vh.ImageItemViewHolder
 
-/** Photo pager adapter */
-class PagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(DIFF) {
+/** Photo stream adapter */
+class PhotoStreamAdapter(
+    private val onItemClick: View.OnClickListener
+) : PagedListAdapter<Photo, RecyclerView.ViewHolder>(DIFF) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageLightboxItemViewHolder {
-        return ImageLightboxItemViewHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ImageItemViewHolder.create(parent).also {
+            it.itemView.setOnClickListener(onItemClick)
+        }
     }
 
-    override fun onBindViewHolder(holder: ImageLightboxItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ImageItemViewHolder).bind(getItem(position))
     }
 
     override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1L
@@ -39,7 +44,6 @@ class PagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(DIFF) 
 }
 
 /** Photo item diff */
-// todo: move to a common class
 private val DIFF = object : DiffUtil.ItemCallback<Photo>() {
     override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
         return oldItem.id == newItem.id

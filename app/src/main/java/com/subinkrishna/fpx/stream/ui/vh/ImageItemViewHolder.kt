@@ -23,7 +23,6 @@ import com.subinkrishna.aspect.AspectRatioLayout
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.ktx.setImageUrl
 import com.subinkrishna.fpx.service.model.Photo
-import timber.log.Timber
 
 /**
  * ViewHolder for image items in the photo stream
@@ -53,7 +52,6 @@ class ImageItemViewHolder(val v: AspectRatioImageView) : RecyclerView.ViewHolder
             lock(AspectRatioLayout.WIDTH)
             setImageUrl(
                 url = url,
-                crossfade = true,
                 placeHolderRes = R.drawable.placeholder_media_thumbnail)
         }
     }

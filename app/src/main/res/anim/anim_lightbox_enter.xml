@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:interpolator="@android:anim/decelerate_interpolator"
+     android:duration="@integer/lightbox_transition_duration">
+
+    <!--
+    <scale
+            android:pivotX="50%p"
+            android:pivotY="50%p"
+            android:fromYScale="98%p"
+            android:toYScale="100%p"
+            android:fromXScale="98%p"
+            android:toXScale="100%p"/>
+    -->
+
+    <alpha
+            android:fromAlpha="0.0"
+            android:toAlpha="1.0"/>
+</set>

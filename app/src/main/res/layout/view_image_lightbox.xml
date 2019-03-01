@@ -25,7 +25,7 @@
 
         <TextView
                 android:id="@+id/username"
-                android:background="@color/offWhite"
+                android:background="@color/translucentWhiteLight"
                 android:layout_marginStart="56dp"
                 android:paddingStart="3dp"
                 android:paddingEnd="3dp"
@@ -40,7 +40,7 @@
 
         <TextView
                 android:id="@+id/title"
-                android:background="@color/offWhite"
+                android:background="@color/translucentWhiteLight"
                 android:layout_marginStart="56dp"
                 android:layout_marginTop="22sp"
                 android:paddingStart="3dp"
