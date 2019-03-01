@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.subinkrishna.fpx.stream.ui
+package com.subinkrishna.fpx.stream.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -62,10 +62,9 @@ class ImageLightboxView @JvmOverloads constructor(
         val title = item?.name
 
         imageView.setImageUrl(
-            url = url, crossfade = true)
+            url = url)
         avatarView.setImageUrl(
             url = avatarUrl,
-            crossfade = true,
             centerCrop = true,
             placeHolderRes = R.drawable.placeholder_media_thumbnail)
         usernameText.text = username.orEmpty()

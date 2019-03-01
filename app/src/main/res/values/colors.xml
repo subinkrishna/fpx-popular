@@ -2,10 +2,13 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="offWhite">#F5F5F5</color>
+    <color name="translucentWhite">#EEFFFFFF</color>
+    <color name="translucentWhiteLight">#AAFFFFFF</color>
     <color name="darkGrey">@android:color/darker_gray</color>
     <color name="text">#252525</color>
 
     <color name="colorPrimary">@color/offWhite</color>
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#1565C0</color>
+
 </resources>
