@@ -18,38 +18,97 @@ package com.subinkrishna.fpx.stream.ui.view
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.LayoutParams
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.stream.model.NetworkState
 import com.subinkrishna.fpx.stream.ui.vh.ImageItemViewHolder
+import com.subinkrishna.fpx.stream.ui.vh.NetworkStateViewHolder
 
 /** Photo stream adapter */
 class PhotoStreamAdapter(
-    private val onItemClick: View.OnClickListener
-) : PagedListAdapter<Photo, RecyclerView.ViewHolder>(DIFF) {
+    private val itemClickListener: View.OnClickListener,
+    private val retryButtonClickListener: View.OnClickListener
+) : PagedListAdapter<Photo, RecyclerView.ViewHolder>(PhotoDiff()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ImageItemViewHolder.create(parent).also {
-            it.itemView.setOnClickListener(onItemClick)
+    companion object {
+        // View types
+        const val TYPE_PHOTO = 0
+        const val TYPE_NETWORK_STATE = 1
+    }
+
+    // Holds the latest network state
+    private var networkState: NetworkState? = null
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_NETWORK_STATE -> {
+                NetworkStateViewHolder.create(parent, retryButtonClickListener)
+            }
+            else -> {
+                ImageItemViewHolder.create(parent).also {
+                    it.itemView.setOnClickListener(itemClickListener)
+                }
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ImageItemViewHolder).bind(getItem(position))
+        when (holder) {
+            is ImageItemViewHolder -> holder.bind(getItem(position))
+            is NetworkStateViewHolder -> {
+                val lp = holder.itemView.layoutParams as? LayoutParams
+                lp?.isFullSpan = true
+                holder.bind(networkState)
+            }
+        }
     }
 
-    override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1L
-
-    fun getItemAt(position: Int) = getItem(position)
-}
-
-/** Photo item diff */
-private val DIFF = object : DiffUtil.ItemCallback<Photo>() {
-    override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-        return oldItem.id == newItem.id
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
-    override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-        return oldItem.id == newItem.id
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            (hasExtraRow() && position == itemCount - 1) -> TYPE_NETWORK_STATE
+            else -> TYPE_PHOTO
+        }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return when {
+            (hasExtraRow() && position == itemCount - 1) -> 0
+            else -> getItem(position)?.id ?: -1
+        }
+    }
+
+    /**
+     * Sets the latest network state. Network status will be
+     * added to (or removed from) the bottom of the view based on the incoming status
+     *
+     * @param newState
+     */
+    fun setNetworkState(newState: NetworkState?) {
+        val oldState = this.networkState
+        val hadExtraRow = hasExtraRow()
+        this.networkState = newState
+        val hasExtraRow = hasExtraRow()
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount())
+            } else {
+                notifyItemInserted(super.getItemCount())
+            }
+        } else if (hasExtraRow && oldState != newState) {
+            notifyItemChanged(itemCount - 1)
+        }
+    }
+
+    /** Checks if an extra row is needed */
+    private fun hasExtraRow(): Boolean {
+        return networkState != null && networkState != NetworkState.Ready
     }
 }

@@ -15,23 +15,18 @@
  */
 package com.subinkrishna.fpx.stream.ui.view
 
-import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import com.subinkrishna.fpx.service.model.Photo
-import com.subinkrishna.fpx.stream.ui.vh.ImageLightboxItemViewHolder
 
-/** Photo pager adapter */
-class PagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(PhotoDiff()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageLightboxItemViewHolder {
-        return ImageLightboxItemViewHolder.create(parent)
+/**
+ * Default Photo ItemCallback
+ */
+open class PhotoDiff : DiffUtil.ItemCallback<Photo>() {
+    override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun onBindViewHolder(holder: ImageLightboxItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        return oldItem.id == newItem.id
     }
-
-    override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1L
-
-    fun getItemAt(position: Int) = getItem(position)
 }

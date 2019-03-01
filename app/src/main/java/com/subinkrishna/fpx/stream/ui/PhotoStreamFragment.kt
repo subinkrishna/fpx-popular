@@ -21,10 +21,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.doOnLayout
-import androidx.core.view.isVisible
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +32,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
+import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.model.ViewState
 import com.subinkrishna.fpx.stream.ui.view.PhotoStreamAdapter
@@ -50,14 +50,13 @@ class PhotoStreamFragment : Fragment() {
         fun onItemClick(v: View, position: Int)
 
         /** Called back for parent's preference on the start position */
-        fun startPosition(): Int = 0
+        fun startPosition(): Int
     }
 
     var callback: Callback? = null
 
     private val gridSpacing by lazy { resources.getDimension(R.dimen.grid_spacing).toInt() }
     private lateinit var photoGrid: RecyclerView
-    private lateinit var progressIndicator: ProgressBar
 
     // ViewModel which belongs to parent
     // activity so that state can be shared with other fragments
@@ -74,11 +73,12 @@ class PhotoStreamFragment : Fragment() {
 
     // Grid adapter
     private val streamAdapter = PhotoStreamAdapter(
-        onItemClick = View.OnClickListener { v ->
+        itemClickListener = View.OnClickListener { v ->
             val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
             val position = lm.getPosition(v)
             callback?.onItemClick(v, position)
-        }
+        },
+        retryButtonClickListener = View.OnClickListener { retry() }
     ).apply {
         setHasStableIds(true)
     }
@@ -96,14 +96,21 @@ class PhotoStreamFragment : Fragment() {
 
         photoGrid.doOnLayout {
             val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
-            val position = callback?.startPosition() ?: 0
-            val v = lm.findViewByPosition(position)
-            // Ask the grid to scroll to the position if the view for the position is null
-            // or is only partially visible
-            if (v == null || lm.isViewPartiallyVisible(v, false, true)) {
-                photoGrid.post { photoGrid.scrollToPosition(position) }
+            val position = callback?.startPosition() ?: -1
+            if (position >= 0) {
+                val v = lm.findViewByPosition(position)
+                // Ask the grid to scroll to the position if the view for the position is null
+                // or is only partially visible
+                if (v == null || lm.isViewPartiallyVisible(v, false, true)) {
+                    photoGrid.post { photoGrid.scrollToPosition(position) }
+                }
             }
         }
+
+        // Observe changes to network state and update the UI accordingly
+        viewModel.networkState.observe(this, Observer {
+            streamAdapter.setNetworkState(it)
+        })
 
         // Observe view state & render the changes as the arrive
         viewModel.viewStateLive().observe(this, Observer {
@@ -120,8 +127,7 @@ class PhotoStreamFragment : Fragment() {
     // Internal methods
 
     private fun render(state: ViewState) {
-        Timber.d("==> ${state.isLoading}")
-        progressIndicator.isVisible = state.isLoading
+        Timber.d("==> $state")
         streamAdapter.submitList(state.items)
     }
 
@@ -156,7 +162,17 @@ class PhotoStreamFragment : Fragment() {
                 }
             })
         }
+    }
 
-        progressIndicator = root.findViewById(R.id.progressIndicator)
+    private fun retry() {
+        viewModel.retry()
+        // This is to avoid recycler view to jump to the end of page once the initial
+        // page is loaded after a retry. This may not be ideal, but works!
+        // May need to figure out a better way to handle this.
+        if (streamAdapter.getItemViewType(0) != PhotoStreamAdapter.TYPE_PHOTO) {
+            photoGrid.doOnNextLayout {
+                photoGrid.post { photoGrid.scrollToPosition(0) }
+            }
+        }
     }
 }

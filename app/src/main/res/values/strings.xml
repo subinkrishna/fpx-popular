@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Popular Photos</string>
+
+    <!-- Error messages -->
+    <string name="error_unable_to_connect">Unable to connect. Tap to retry.</string>
+
+    <!-- A11y -->
+    <string name="a11y_close">Close</string>
+
 </resources>

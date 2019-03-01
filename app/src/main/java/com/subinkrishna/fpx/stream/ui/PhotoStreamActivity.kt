@@ -31,7 +31,7 @@ class PhotoStreamActivity : AppCompatActivity(),
 
     // Holds the last known lightbox position
     // This is used by the photo grid to scroll to the given position
-    var lastKnownLightboxPosition = 0
+    var lastKnownLightboxPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

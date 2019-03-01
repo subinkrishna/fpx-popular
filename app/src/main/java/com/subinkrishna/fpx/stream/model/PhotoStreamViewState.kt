@@ -23,16 +23,15 @@ data class ViewState(
     val isLoading: Boolean = false,
     val items: PagedList<Photo>? = null,
     val error: Error? = null
-)
-
-/** Events */
-sealed class Event {
-    object Load : Event()
-    object Refresh : Event()
+) {
+    override fun toString(): String {
+        return "State { isLoading: $isLoading, items: ${items?.size} }"
+    }
 }
 
-/** Error */
-sealed class Error {
-    object Network : Error()
-    object Unknown : Error()
+/** Network state */
+sealed class NetworkState {
+    object Loading : NetworkState()
+    object Ready : NetworkState()
+    object Error : NetworkState()
 }
