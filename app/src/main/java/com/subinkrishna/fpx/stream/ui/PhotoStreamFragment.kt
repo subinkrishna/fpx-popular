@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -45,13 +46,11 @@ class PhotoStreamFragment : Fragment() {
 
     /** Callback interface definition */
     interface Callback {
-        /**
-         * Called on clicking an item in the photo grid
-         *
-         * @param v - clicked view
-         * @param position - adapter position of the selected item
-         */
+        /** Called on clicking an item in the photo grid */
         fun onItemClick(v: View, position: Int)
+
+        /** Called back for parent's preference on the start position */
+        fun startPosition(): Int = 0
     }
 
     var callback: Callback? = null
@@ -95,12 +94,15 @@ class PhotoStreamFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         configureUi(view)
 
-        // Forcing the recycler view to scroll to 0th position
-        // to avoid SGLM's gap filling feature that causes
-        // views to move around/slide. May need to find a better way.
-        photoGrid.post {
-            // todo: pick 0 or pagers last position
-            photoGrid.scrollToPosition(10)
+        photoGrid.doOnLayout {
+            val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
+            val position = callback?.startPosition() ?: 0
+            val v = lm.findViewByPosition(position)
+            // Ask the grid to scroll to the position if the view for the position is null
+            // or is only partially visible
+            if (v == null || lm.isViewPartiallyVisible(v, false, true)) {
+                photoGrid.post { photoGrid.scrollToPosition(position) }
+            }
         }
 
         // Observe view state & render the changes as the arrive

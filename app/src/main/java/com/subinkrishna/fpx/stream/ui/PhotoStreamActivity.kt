@@ -29,6 +29,10 @@ class PhotoStreamActivity : AppCompatActivity(),
     PhotoStreamFragment.Callback,
     LightboxFragment.Callback {
 
+    // Holds the last known lightbox position
+    // This is used by the photo grid to scroll to the given position
+    var lastKnownLightboxPosition = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_stream)
@@ -47,12 +51,9 @@ class PhotoStreamActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
-        when (currentFragment) {
-            is LightboxFragment -> {
-                Timber.d("current position: ${currentFragment.currentItem}")
-            }
+        if (currentFragment is LightboxFragment) {
+            lastKnownLightboxPosition = currentFragment.currentItem
         }
-
         super.onBackPressed()
     }
 
@@ -72,14 +73,22 @@ class PhotoStreamActivity : AppCompatActivity(),
             .commit()
     }
 
+    override fun startPosition(): Int = lastKnownLightboxPosition
+
+
     // LightboxFragment.Callback
 
-    override fun onPageChange(position: Int) = Unit
-
-    override fun onClose() {
-        // todo: pop the lightbox
-        // todo: scroll the grid to the latest page position in the pager
+    override fun onPageChange(position: Int) {
+        lastKnownLightboxPosition = position
     }
 
-    // Internal methods
+    override fun onClose() {
+        // Get the current lightbox position
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
+        if (currentFragment is LightboxFragment) {
+            lastKnownLightboxPosition = currentFragment.currentItem
+        }
+        // And pop the back stack to go back to grid
+        supportFragmentManager.popBackStack()
+    }
 }
