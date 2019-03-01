@@ -17,6 +17,7 @@ package com.subinkrishna.fpx.stream.model
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.lifecycle.Transformations.switchMap
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.subinkrishna.fpx.ktx.plusAssign
@@ -56,6 +57,10 @@ class PhotoStreamViewModel(
     private val dataSourceFactory = PagedStreamDataSource.Factory(
         api, feature, disposables)
 
+    val networkState = switchMap(dataSourceFactory.dataSourceLive) {
+        it.networkStateLive
+    }
+
     // Page configurations
     private val pageSize = 40
     private val pagingConfig by lazy {
@@ -77,17 +82,14 @@ class PhotoStreamViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val current = viewStateLive.value ?: ViewState()
-                viewStateLive.value = current.copy(
-                    isLoading = false,
-                    items = it,
-                    error = null)
+                viewStateLive.value = current.copy(isLoading = false, items = it)
             }, {
                 Timber.e("Error! ${it.message}")
                 // todo: handle error
             })
 
         // Initial view state
-        viewStateLive.value = ViewState(isLoading = true, error = null)
+        viewStateLive.value = ViewState(isLoading = true)
     }
 
     override fun onCleared() {
@@ -101,6 +103,11 @@ class PhotoStreamViewModel(
     /** Invalidates the current data set and reloads it */
     fun refresh() {
         dataSourceFactory.dataSourceLive.value?.invalidate()
+    }
+
+    /** Trigger the retry action, if available */
+    fun retry() {
+        dataSourceFactory.dataSourceLive.value?.retry()
     }
 
 }

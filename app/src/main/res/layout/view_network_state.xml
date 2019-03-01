@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+    <ProgressBar
+            android:id="@+id/networkStateProgress"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:id="@+id/networkStateErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_cloud_off_black_24dp"
+            android:drawablePadding="5dp"
+            android:text="@string/error_unable_to_connect"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+</FrameLayout>

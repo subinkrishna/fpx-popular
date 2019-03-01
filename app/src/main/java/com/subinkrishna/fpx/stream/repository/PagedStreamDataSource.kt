@@ -21,6 +21,8 @@ import androidx.paging.PageKeyedDataSource
 import com.subinkrishna.fpx.ktx.plusAssign
 import com.subinkrishna.fpx.service.PhotoApi
 import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.stream.model.NetworkState
+import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -62,6 +64,9 @@ class PagedStreamDataSource(
         }
     }
 
+    // Network state live data
+    val networkStateLive = MutableLiveData<NetworkState>()
+
     // Retry function
     private var retry: (() -> Unit)? = null
 
@@ -73,14 +78,17 @@ class PagedStreamDataSource(
         val size = params.requestedLoadSize
         try {
             // Synchronously loading the first page
+            networkStateLive.postValue(NetworkState.Loading)
             val stream = api.photos(feature, 1, size).blockingGet()
             // Notify
             callback.onResult(stream.photos, 0, 2)
+            networkStateLive.postValue(NetworkState.Ready)
         } catch (t: Throwable) {
-            Timber.e("Error! ${t.message}")
+            Timber.e("Error! $t")
             retry = {
                 loadInitial(params, callback)
             }
+            networkStateLive.postValue(NetworkState.Error)
         }
     }
 
@@ -93,6 +101,7 @@ class PagedStreamDataSource(
         val size = params.requestedLoadSize
 
         // This needs to happen asynchronously
+        networkStateLive.postValue(NetworkState.Loading)
         disposable += api.photos(feature, pageNumber, size)
             .subscribeOn(Schedulers.io())
             .subscribe({
@@ -102,11 +111,13 @@ class PagedStreamDataSource(
                 callback.onResult(
                     it.photos,
                     if (hasMorePhotos) pageNumber + 1 else null)
+                networkStateLive.postValue(NetworkState.Ready)
             }, {
                 Timber.e("Error! ${it.message}")
                 retry = {
                     loadAfter(params, callback)
                 }
+                networkStateLive.postValue(NetworkState.Error)
             })
     }
 
@@ -120,4 +131,15 @@ class PagedStreamDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, Photo>
     ) = Unit
+
+    /** Execute retry action asynchronously, if any */
+    fun retry() {
+        val action = retry
+        retry = null
+        if (action != null) {
+            disposable += Completable.fromAction(action)
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+        }
+    }
 }
