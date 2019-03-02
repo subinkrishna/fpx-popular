@@ -66,6 +66,14 @@ class LightboxFragment : Fragment() {
         get() = pager.currentItem
         set(value) { pager.setCurrentItem(value, false) }
 
+    // Note:
+    // This implementation of lightbox pager uses androidx's ViewPager2 library
+    // which is still in alpha. The RecyclerView based ViewPager2 is beneficial
+    // since we can use the standard PagedListAdapter just like the photo
+    // stream grid. Since PagedListAdapter accepts the same PagedList object
+    // shared with photo grid, pagination works out of box even with the pager.
+    // The only downside is that the library is still alpha and may not
+    // be as stable as we may like.
     private lateinit var pager: ViewPager2
     private lateinit var closeButton: ImageButton
     private lateinit var infoButton: ImageButton
@@ -73,9 +81,8 @@ class LightboxFragment : Fragment() {
         setHasStableIds(true)
     }
 
-    // ViewModel which belongs to parent
+    // LightboxFragment shares the ViewModel which belongs to parent
     // activity so that state can be shared with other fragments
-    // if needed
     private val viewModel by lazy {
         activity?.run {
             val factory = PhotoStreamViewModel.Factory(

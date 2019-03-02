@@ -44,7 +44,7 @@ class PhotoStreamViewModel(
     class Factory(
         private val app: Application,
         private val api: PhotoApi,
-        private val feature: String = "popular"
+        private val feature: String = "popular" // Photo stream type
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

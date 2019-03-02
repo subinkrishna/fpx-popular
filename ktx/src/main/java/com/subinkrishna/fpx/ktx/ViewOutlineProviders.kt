@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pearsoned.ada.common.ui
+package com.subinkrishna.fpx.ktx
 
 import android.graphics.Outline
 import android.view.View

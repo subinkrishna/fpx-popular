@@ -19,7 +19,6 @@ package com.subinkrishna.fpx.ktx
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.annotation.Px
-import com.pearsoned.ada.common.ui.ViewOutlineProviders
 
 /**
  * Clips a view to circle
