@@ -29,11 +29,11 @@ class PhotoDetailsAdapter : RecyclerView.Adapter<BaseDetailsItemViewHolder>() {
 
     companion object {
         // ViewTypes
-        private const val TYPE_TITLE_USER_DATE = 0
-        private const val TYPE_PULSE = 1
-        private const val TYPE_CAMERA = 2
-        private const val TYPE_LOCATION = 3
-        private const val TYPE_DATE = 4
+        const val TYPE_TITLE_USER_DATE = 0
+        const val TYPE_PULSE = 1
+        const val TYPE_CAMERA = 2
+        const val TYPE_LOCATION = 3
+        const val TYPE_DATE = 4
     }
 
     private var photo: Photo? = null

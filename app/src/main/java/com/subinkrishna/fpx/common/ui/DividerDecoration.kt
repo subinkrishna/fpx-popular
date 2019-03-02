@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Divider decoration
  */
-class DividerDecoration : RecyclerView.ItemDecoration() {
+open class DividerDecoration : RecyclerView.ItemDecoration() {
 
     private val dividerPaint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -48,7 +48,7 @@ class DividerDecoration : RecyclerView.ItemDecoration() {
     }
 
     @SuppressWarnings("WeakerAccess")
-    fun shouldDrawDividerAbove(
+    open fun shouldDrawDividerAbove(
         parent: RecyclerView,
         child: View
     ): Boolean {
