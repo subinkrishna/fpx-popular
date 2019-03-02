@@ -15,13 +15,16 @@
  */
 package com.subinkrishna.fpx.service.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /** Type that represents a user, unique identifiers & avatar  */
+@Parcelize
 data class User(
     val id: Long,
     val username: String,
     @SerializedName("fullname") val name: String,
     @SerializedName("userpic_https_url") val avatar: String
-)
+) : Parcelable
 

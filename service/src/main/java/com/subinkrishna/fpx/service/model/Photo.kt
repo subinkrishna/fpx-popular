@@ -15,23 +15,26 @@
  */
 package com.subinkrishna.fpx.service.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Type to represent a photo item from a stream that contains
  * dimensions, EXIF, user, location & image details
  */
+@Parcelize
 data class Photo(
     val id: Long,
     val name: String,
     val width: Int,
     val height: Int,
     val images: List<Image>,
-    @SerializedName("taken_at") val takenAt: String,
+    @SerializedName("taken_at") val takenAt: String?,
+    @SerializedName("created_at") val createdAt: String?,
     @SerializedName("times_viewed") val viewCount: Int,
     @SerializedName("votes_count") val voteCount: Int,
     @SerializedName("comments_count") val commentCount: Int,
-    @SerializedName("favorites_count") val favoritesCount: Int,
     val rating: Float,
     val user: User,
     val camera: String?,
@@ -40,7 +43,8 @@ data class Photo(
     val iso: String?,
     val aperture: String?,
     @SerializedName("shutter_speed") val shutterSpeed: String?,
+    val location: String?,
     val latitude: Float?,
     val longitude: Float?
-)
+): Parcelable
 

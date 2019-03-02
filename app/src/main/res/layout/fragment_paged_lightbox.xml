@@ -17,6 +17,17 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/a11y_close"
             android:src="@drawable/ic_close_white_24dp"
+            android:background="?attr/selectableItemBackground" />
+
+    <ImageButton
+            android:id="@+id/infoButton"
+            android:layout_width="?android:actionBarSize"
+            android:layout_height="?android:actionBarSize"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="end"
+            android:contentDescription="@string/a11y_info"
+            android:src="@drawable/ic_info_black_24dp"
+            android:tint="@color/white"
             android:background="?attr/selectableItemBackground"/>
 
 </FrameLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="60sp">
+
+    <TextView
+            android:id="@+id/viewCount"
+            style="?attr/mediumTextAppearance"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:drawableStart="@drawable/ic_eye_black_24dp"/>
+
+    <TextView
+            android:id="@+id/commentCount"
+            style="?attr/mediumTextAppearance"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:drawableStart="@drawable/ic_comment_black_24dp"/>
+
+    <TextView
+            android:id="@+id/voteCount"
+            style="?attr/mediumTextAppearance"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:drawableStart="@drawable/ic_favorite_border_black_24dp"/>
+
+</LinearLayout>

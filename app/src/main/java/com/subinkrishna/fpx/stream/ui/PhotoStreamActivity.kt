@@ -19,7 +19,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.subinkrishna.fpx.R
-import timber.log.Timber
+import com.subinkrishna.fpx.service.model.Photo
 
 /**
  * Photo stream activity implementation. This activity renders the
@@ -31,7 +31,7 @@ class PhotoStreamActivity : AppCompatActivity(),
 
     // Holds the last known lightbox position
     // This is used by the photo grid to scroll to the given position
-    var lastKnownLightboxPosition = -1
+    private var lastKnownLightboxPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +41,8 @@ class PhotoStreamActivity : AppCompatActivity(),
             supportFragmentManager
                 .beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.container, PhotoStreamFragment(), "grid")
+                .replace(R.id.container, PhotoStreamFragment())
                 .commit()
-        } else {
-            val f = supportFragmentManager.findFragmentByTag("grid")
-            Timber.d("--> $f")
         }
     }
 
@@ -90,5 +87,14 @@ class PhotoStreamActivity : AppCompatActivity(),
         }
         // And pop the back stack to go back to grid
         supportFragmentManager.popBackStack()
+    }
+
+    override fun onInfo(item: Photo?) {
+        // Launch photo details bottom sheet
+        item?.let {
+            PhotoDetailsFragment.create(it).show(
+                supportFragmentManager,
+                PhotoDetailsFragment::class.java.simpleName)
+        }
     }
 }

@@ -26,7 +26,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.subinkrishna.fpx.R
+import com.subinkrishna.fpx.di.ServiceLocator
 import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
+import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.ui.view.PagerAdapter
 
@@ -41,8 +43,11 @@ class LightboxFragment : Fragment() {
         /** Called back when the ViewPager page changes */
         fun onPageChange(position: Int)
 
-        /** Called back on "close" */
+        /** Called back on "close" button click */
         fun onClose()
+
+        /** Called back on "info" button click */
+        fun onInfo(item: Photo?)
     }
 
     companion object {
@@ -64,6 +69,7 @@ class LightboxFragment : Fragment() {
 
     private lateinit var pager: ViewPager2
     private lateinit var closeButton: ImageButton
+    private lateinit var infoButton: ImageButton
     private val pagerAdapter = PagerAdapter().apply {
         setHasStableIds(true)
     }
@@ -75,7 +81,7 @@ class LightboxFragment : Fragment() {
         activity?.run {
             val factory = PhotoStreamViewModel.Factory(
                 app = application,
-                api = NetworkPhotoApi()
+                api = ServiceLocator.get().api()
             )
             ViewModelProviders.of(this, factory)[PhotoStreamViewModel::class.java]
         } ?: throw IllegalStateException("Activity cannot be null")
@@ -95,6 +101,13 @@ class LightboxFragment : Fragment() {
                 callback?.onClose()
             }
         }
+
+        infoButton = view.findViewById<ImageButton>(R.id.infoButton).apply {
+            setOnClickListener {
+                callback?.onInfo(pagerAdapter.getItemAt(pager.currentItem))
+            }
+        }
+
         pager = view.findViewById<ViewPager2>(R.id.pager).apply {
             adapter = pagerAdapter
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

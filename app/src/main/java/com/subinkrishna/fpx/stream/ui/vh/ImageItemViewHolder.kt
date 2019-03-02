@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.aspect.AspectRatioImageView
 import com.subinkrishna.aspect.AspectRatioLayout
 import com.subinkrishna.fpx.R
+import com.subinkrishna.fpx.ext.smallImage
 import com.subinkrishna.fpx.ktx.setImageUrl
 import com.subinkrishna.fpx.service.model.Photo
 
@@ -39,19 +40,15 @@ class ImageItemViewHolder(val v: AspectRatioImageView) : RecyclerView.ViewHolder
     }
 
     fun bind(item: Photo?) {
-        val url = item?.images?.get(0)?.url
         val aspectRatio = when (item) {
             null -> 1F
             else -> item.width.toFloat() / item.height.toFloat()
         }
-
-        // Timber.d("bind: ${item?.width} x ${item?.height} = $aspectRatio, $url")
-
         v.apply {
             ratio(aspectRatio)
             lock(AspectRatioLayout.WIDTH)
             setImageUrl(
-                url = url,
+                url = item?.smallImage,
                 placeHolderRes = R.drawable.placeholder_media_thumbnail)
         }
     }

@@ -15,11 +15,14 @@
  */
 package com.subinkrishna.fpx.service.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /** Image type */
+@Parcelize
 data class Image(
     val size: Int,
     @SerializedName("https_url") val url: String,
     val format: String
-)
+) : Parcelable
