@@ -74,15 +74,18 @@ class PhotoStreamFragment : Fragment() {
     }
 
     // Grid adapter
-    private val streamAdapter = PhotoStreamAdapter(
-        itemClickListener = View.OnClickListener { v ->
-            val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
-            val position = lm.getPosition(v)
-            callback?.onItemClick(v, position)
-        },
-        retryButtonClickListener = View.OnClickListener { retry() }
-    ).apply {
-        setHasStableIds(true)
+    private val streamAdapter by lazy {
+        PhotoStreamAdapter(
+            cornerRadius = context?.resources?.getDimensionPixelSize(R.dimen.photo_corner_radius) ?: 0,
+            itemClickListener = View.OnClickListener { v ->
+                val lm = photoGrid.layoutManager as StaggeredGridLayoutManager
+                val position = lm.getPosition(v)
+                callback?.onItemClick(v, position)
+            },
+            retryButtonClickListener = View.OnClickListener { retry() }
+        ).apply {
+            setHasStableIds(true)
+        }
     }
 
     override fun onCreateView(

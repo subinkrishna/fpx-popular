@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="grid_spacing">5dp</dimen>
+
+    <dimen name="photo_corner_radius">6dp</dimen>
     <dimen name="photo_stream_toolbar_height">56dp</dimen>
+
+    <dimen name="photo_details_margin_start">60sp</dimen>
 </resources>

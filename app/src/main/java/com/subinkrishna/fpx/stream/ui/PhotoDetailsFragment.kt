@@ -56,7 +56,16 @@ class PhotoDetailsFragment : BottomSheetDialogFragment() {
             adapter = detailsAdapter
             layoutManager = LinearLayoutManager(this@PhotoDetailsFragment.context)
             setHasFixedSize(true)
-            addItemDecoration(DividerDecoration())
+            addItemDecoration(object : DividerDecoration() {
+                override fun shouldDrawDividerAbove(
+                    parent: RecyclerView,
+                    child: View
+                ): Boolean {
+                    val type = parent.layoutManager?.getItemViewType(child)
+                    return super.shouldDrawDividerAbove(parent, child) &&
+                            type != PhotoDetailsAdapter.TYPE_PULSE
+                }
+            })
         }
 
         val photo = arguments?.getParcelable(KEY_PHOTO) as? Photo

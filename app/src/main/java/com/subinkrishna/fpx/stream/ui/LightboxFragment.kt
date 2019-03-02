@@ -27,10 +27,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.di.ServiceLocator
-import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
 import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
-import com.subinkrishna.fpx.stream.ui.view.PagerAdapter
+import com.subinkrishna.fpx.stream.ui.view.LightboxPagerAdapter
 
 /**
  * Paged lightbox fragment implementation that renders fullscreen photos
@@ -70,7 +69,7 @@ class LightboxFragment : Fragment() {
     private lateinit var pager: ViewPager2
     private lateinit var closeButton: ImageButton
     private lateinit var infoButton: ImageButton
-    private val pagerAdapter = PagerAdapter().apply {
+    private val pagerAdapter = LightboxPagerAdapter().apply {
         setHasStableIds(true)
     }
 

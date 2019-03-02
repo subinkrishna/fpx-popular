@@ -25,6 +25,7 @@ import androidx.core.view.isVisible
 import com.github.chrisbanes.photoview.PhotoView
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.ext.largeImage
+import com.subinkrishna.fpx.ktx.clipToRoundRect
 import com.subinkrishna.fpx.ktx.setImageUrl
 import com.subinkrishna.fpx.service.model.Photo
 
@@ -42,6 +43,9 @@ class ImageLightboxView @JvmOverloads constructor(
     private val avatarView: ImageView
     private val usernameText: TextView
     private val titleText: TextView
+    private val cornerRadius by lazy {
+        resources.getDimensionPixelSize(R.dimen.photo_corner_radius)
+    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_image_lightbox, this, true)
@@ -51,6 +55,7 @@ class ImageLightboxView @JvmOverloads constructor(
             setAllowParentInterceptOnEdge(true)
         }
         avatarView = findViewById(R.id.avatar)
+        avatarView.clipToRoundRect(cornerRadius.toFloat())
         usernameText = findViewById(R.id.username)
         titleText = findViewById(R.id.title)
     }

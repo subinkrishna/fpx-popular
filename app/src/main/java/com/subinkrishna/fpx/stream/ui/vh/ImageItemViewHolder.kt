@@ -41,9 +41,9 @@ class ImageItemViewHolder(val v: View) : RecyclerView.ViewHolder(v) {
         }
     }
 
-    private val imageView: AspectRatioImageView = v.findViewById(R.id.image)
-    private val usernameText: TextView = v.findViewById(R.id.username)
-    private val ratingsText: TextView = v.findViewById(R.id.rating)
+    val imageView: AspectRatioImageView = v.findViewById(R.id.image)
+    val usernameText: TextView = v.findViewById(R.id.username)
+    val ratingsText: TextView = v.findViewById(R.id.rating)
 
     fun bind(item: Photo?) {
         val aspectRatio = when (item) {
