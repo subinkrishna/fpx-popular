@@ -37,5 +37,6 @@ class ImageLightboxItemViewHolder(val v: ImageLightboxView) : RecyclerView.ViewH
 
     fun bind(item: Photo?) {
         v.bind(item)
+        v.contentDescription = item?.name
     }
 }

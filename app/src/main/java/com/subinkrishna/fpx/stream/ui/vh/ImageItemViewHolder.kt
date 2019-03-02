@@ -16,7 +16,9 @@
 package com.subinkrishna.fpx.stream.ui.vh
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.aspect.AspectRatioImageView
 import com.subinkrishna.aspect.AspectRatioLayout
@@ -28,28 +30,35 @@ import com.subinkrishna.fpx.service.model.Photo
 /**
  * ViewHolder for image items in the photo stream
  */
-class ImageItemViewHolder(val v: AspectRatioImageView) : RecyclerView.ViewHolder(v) {
+class ImageItemViewHolder(val v: View) : RecyclerView.ViewHolder(v) {
 
     companion object {
         /** Creates a new view holder instance */
         fun create(parent: ViewGroup): ImageItemViewHolder {
             val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_stream_grid_image_item, parent, false)
-            return ImageItemViewHolder(v as AspectRatioImageView)
+            return ImageItemViewHolder(v)
         }
     }
+
+    private val imageView: AspectRatioImageView = v.findViewById(R.id.image)
+    private val usernameText: TextView = v.findViewById(R.id.username)
+    private val ratingsText: TextView = v.findViewById(R.id.rating)
 
     fun bind(item: Photo?) {
         val aspectRatio = when (item) {
             null -> 1F
             else -> item.width.toFloat() / item.height.toFloat()
         }
-        v.apply {
+        imageView.apply {
             ratio(aspectRatio)
             lock(AspectRatioLayout.WIDTH)
             setImageUrl(
                 url = item?.smallImage,
                 placeHolderRes = R.drawable.placeholder_media_thumbnail)
         }
+        usernameText.text = item?.user?.username.orEmpty()
+        ratingsText.text = item?.rating?.toString() ?: "0"
+        v.contentDescription = item?.name
     }
 }

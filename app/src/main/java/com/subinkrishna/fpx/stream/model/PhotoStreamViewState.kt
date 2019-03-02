@@ -30,8 +30,8 @@ data class ViewState(
 }
 
 /** Network state */
-sealed class NetworkState {
-    object Loading : NetworkState()
-    object Ready : NetworkState()
-    object Error : NetworkState()
+sealed class NetworkState(open val page: Int = 1) {
+    data class Loading(override val page: Int) : NetworkState(page)
+    data class Ready(override val page: Int) : NetworkState(page)
+    data class Error(override val page: Int) : NetworkState(page)
 }

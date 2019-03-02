@@ -16,13 +16,12 @@
 package com.subinkrishna.fpx.ext
 
 import com.subinkrishna.fpx.service.model.Photo
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
 /** Returns the small image from the image set */
 val Photo.smallImage: String?
-    get() = images.find { it.size == 21 } ?.url
+    get() = images.find { it.size == 21 } ?.url ?: images.getOrNull(0)?.url
 
 /** Returns the large image from the image set */
 val Photo.largeImage: String?
@@ -56,17 +55,24 @@ val Photo.displayDate: String
 /** Returns formatted camera & setting details */
 val Photo.cameraDetails: String
     get() {
-        val cameraLens = listOf(
-            camera.emptyIfNull(),
-            lens.emptyIfNull()
-        ).joinToString("  ")
-        val settings = listOf(
-            aperture.emptyIfNull(prefix = "f/"),
-            shutterSpeed.emptyIfNull(),
-            focalLength.emptyIfNull(suffix = "mm"),
-            iso.emptyIfNull(prefix = "ISO ")
-        ).joinToString("  ")
-        return listOf(cameraLens, settings).joinToString("\n")
+        val separator = " "
+        val cameraLens = StringBuilder()
+            .append(camera.emptyIfNull())
+            .appendIfNotEmpty(separator)
+            .append(lens.emptyIfNull())
+        val settings = StringBuilder()
+            .append(aperture.emptyIfNull(prefix = "f/"))
+            .appendIfNotEmpty(separator)
+            .append(shutterSpeed.emptyIfNull())
+            .appendIfNotEmpty(separator)
+            .append(focalLength.emptyIfNull(suffix = "mm"))
+            .appendIfNotEmpty(separator)
+            .append(iso.emptyIfNull(prefix = "ISO "))
+        return StringBuilder()
+            .append(cameraLens.toString().trim())
+            .appendIfNotEmpty("\n")
+            .append(settings.toString().trim())
+            .toString()
     }
 
 /** Returns formatted location details */
@@ -74,11 +80,11 @@ val Photo.locationDetails: String
     get() {
         return StringBuilder().apply {
             append(location.emptyIfNull())
-            if (length > 0) append("\n")
-            val latlong = if (latitude != null && longitude != null) {
+            appendIfNotEmpty("\n")
+            val latLong = if (latitude != null && longitude != null) {
                 "$latitude, $longitude"
             } else ""
-            append(latlong)
+            append(latLong)
         }.toString().trim()
     }
 
@@ -87,4 +93,10 @@ private fun String?.emptyIfNull(
     suffix: String = ""
 ): String {
     return if (this.isNullOrBlank()) "" else "$prefix${this.trim()}$suffix"
+}
+
+private fun StringBuilder.appendIfNotEmpty(text: CharSequence): StringBuilder {
+    if (length > 0 && !endsWith(text))
+        append(text)
+    return this
 }

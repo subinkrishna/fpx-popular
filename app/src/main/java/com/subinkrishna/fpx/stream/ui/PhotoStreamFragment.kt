@@ -30,8 +30,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.di.ServiceLocator
+import com.subinkrishna.fpx.stream.model.NetworkState
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.model.ViewState
 import com.subinkrishna.fpx.stream.ui.view.PhotoStreamAdapter
@@ -55,6 +57,7 @@ class PhotoStreamFragment : Fragment() {
     var callback: Callback? = null
 
     private val gridSpacing by lazy { resources.getDimension(R.dimen.grid_spacing).toInt() }
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var photoGrid: RecyclerView
 
     // ViewModel which belongs to parent
@@ -109,6 +112,7 @@ class PhotoStreamFragment : Fragment() {
         // Observe changes to network state and update the UI accordingly
         viewModel.networkState.observe(this, Observer {
             streamAdapter.setNetworkState(it)
+            swipeRefreshLayout.isRefreshing = it is NetworkState.Loading && it.page == 1
         })
 
         // Observe view state & render the changes as the arrive
@@ -160,6 +164,12 @@ class PhotoStreamFragment : Fragment() {
                     outRect.set(gridSpacing, gridSpacing, gridSpacing, gridSpacing)
                 }
             })
+        }
+
+        swipeRefreshLayout = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout).apply {
+            setOnRefreshListener {
+                viewModel.refresh()
+            }
         }
     }
 

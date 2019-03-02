@@ -77,18 +77,19 @@ class PagedStreamDataSource(
     ) {
         val size = params.requestedLoadSize
         try {
+            networkStateLive.postValue(NetworkState.Loading(1))
             // Synchronously loading the first page
-            networkStateLive.postValue(NetworkState.Loading)
             val stream = api.photos(feature, 1, size).blockingGet()
             // Notify
             callback.onResult(stream.photos, 0, 2)
-            networkStateLive.postValue(NetworkState.Ready)
+
+            networkStateLive.postValue(NetworkState.Ready(1))
         } catch (t: Throwable) {
             Timber.e("Error! $t")
             retry = {
                 loadInitial(params, callback)
             }
-            networkStateLive.postValue(NetworkState.Error)
+            networkStateLive.postValue(NetworkState.Error(1))
         }
     }
 
@@ -101,7 +102,7 @@ class PagedStreamDataSource(
         val size = params.requestedLoadSize
 
         // This needs to happen asynchronously
-        networkStateLive.postValue(NetworkState.Loading)
+        networkStateLive.postValue(NetworkState.Loading(pageNumber))
         disposable += api.photos(feature, pageNumber, size)
             .subscribeOn(Schedulers.io())
             .subscribe({
@@ -111,13 +112,13 @@ class PagedStreamDataSource(
                 callback.onResult(
                     it.photos,
                     if (hasMorePhotos) pageNumber + 1 else null)
-                networkStateLive.postValue(NetworkState.Ready)
+                networkStateLive.postValue(NetworkState.Ready(pageNumber))
             }, {
                 Timber.e("Error! ${it.message}")
                 retry = {
                     loadAfter(params, callback)
                 }
-                networkStateLive.postValue(NetworkState.Error)
+                networkStateLive.postValue(NetworkState.Error(pageNumber))
             })
     }
 
