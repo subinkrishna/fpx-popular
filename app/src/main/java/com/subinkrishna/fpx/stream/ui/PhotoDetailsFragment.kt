@@ -19,11 +19,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.subinkrishna.fpx.R
+import com.subinkrishna.fpx.common.ui.DividerDecoration
 import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.ui.view.PhotoDetailsAdapter
 
@@ -56,9 +56,7 @@ class PhotoDetailsFragment : BottomSheetDialogFragment() {
             adapter = detailsAdapter
             layoutManager = LinearLayoutManager(this@PhotoDetailsFragment.context)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(
-                this@PhotoDetailsFragment.context,
-                DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerDecoration())
         }
 
         val photo = arguments?.getParcelable(KEY_PHOTO) as? Photo

@@ -3,7 +3,7 @@
     <color name="white">#FFFFFF</color>
     <color name="offWhite">#F5F5F5</color>
     <color name="translucentWhite">#EEFFFFFF</color>
-    <color name="translucentWhiteLight">#AAFFFFFF</color>
+    <color name="translucentBlack">#AA000000</color>
     <color name="darkGrey">@android:color/darker_gray</color>
     <color name="text">#252525</color>
 

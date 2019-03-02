@@ -16,6 +16,7 @@
 package com.subinkrishna.fpx.ext
 
 import com.subinkrishna.fpx.service.model.Photo
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,3 +52,39 @@ val Photo.displayDate: String
             ""
         }
     }
+
+/** Returns formatted camera & setting details */
+val Photo.cameraDetails: String
+    get() {
+        val cameraLens = listOf(
+            camera.emptyIfNull(),
+            lens.emptyIfNull()
+        ).joinToString("  ")
+        val settings = listOf(
+            aperture.emptyIfNull(prefix = "f/"),
+            shutterSpeed.emptyIfNull(),
+            focalLength.emptyIfNull(suffix = "mm"),
+            iso.emptyIfNull(prefix = "ISO ")
+        ).joinToString("  ")
+        return listOf(cameraLens, settings).joinToString("\n")
+    }
+
+/** Returns formatted location details */
+val Photo.locationDetails: String
+    get() {
+        return StringBuilder().apply {
+            append(location.emptyIfNull())
+            if (length > 0) append("\n")
+            val latlong = if (latitude != null && longitude != null) {
+                "$latitude, $longitude"
+            } else ""
+            append(latlong)
+        }.toString().trim()
+    }
+
+private fun String?.emptyIfNull(
+    prefix: String = "",
+    suffix: String = ""
+): String {
+    return if (this.isNullOrBlank()) "" else "$prefix${this.trim()}$suffix"
+}

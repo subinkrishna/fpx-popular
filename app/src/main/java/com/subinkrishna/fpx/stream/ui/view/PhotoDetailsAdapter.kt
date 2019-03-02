@@ -17,10 +17,11 @@ package com.subinkrishna.fpx.stream.ui.view
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.subinkrishna.fpx.ext.cameraDetails
+import com.subinkrishna.fpx.ext.displayDate
+import com.subinkrishna.fpx.ext.hasLocation
 import com.subinkrishna.fpx.service.model.Photo
-import com.subinkrishna.fpx.stream.ui.vh.BaseDetailsItemViewHolder
-import com.subinkrishna.fpx.stream.ui.vh.PhotoTitleViewHolder
-import com.subinkrishna.fpx.stream.ui.vh.PulseViewHolder
+import com.subinkrishna.fpx.stream.ui.vh.*
 import java.util.*
 
 /** Photo details adapter */
@@ -32,6 +33,7 @@ class PhotoDetailsAdapter : RecyclerView.Adapter<BaseDetailsItemViewHolder>() {
         private const val TYPE_PULSE = 1
         private const val TYPE_CAMERA = 2
         private const val TYPE_LOCATION = 3
+        private const val TYPE_DATE = 4
 
     }
 
@@ -53,6 +55,9 @@ class PhotoDetailsAdapter : RecyclerView.Adapter<BaseDetailsItemViewHolder>() {
         return when (viewType) {
             TYPE_TITLE_USER_DATE -> PhotoTitleViewHolder.create(parent)
             TYPE_PULSE -> PulseViewHolder.create(parent)
+            TYPE_DATE -> DateDetailsViewHolder.create(parent)
+            TYPE_CAMERA -> CameraDetailsViewHolder.create(parent)
+            TYPE_LOCATION -> LocationDetailsViewHolder.create(parent)
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -74,10 +79,15 @@ class PhotoDetailsAdapter : RecyclerView.Adapter<BaseDetailsItemViewHolder>() {
         photo?.let {
             views += TYPE_TITLE_USER_DATE
             views += TYPE_PULSE
-            // views += TYPE_CAMERA
-            /*if (photo.hasLocation) {
+            if (!photo.displayDate.isNullOrBlank()) {
+                views += TYPE_DATE
+            }
+            if (!photo.cameraDetails.isNullOrBlank()) {
+                views += TYPE_CAMERA
+            }
+            if (photo.hasLocation) {
                 views += TYPE_LOCATION
-            }*/
+            }
         }
         return views
     }

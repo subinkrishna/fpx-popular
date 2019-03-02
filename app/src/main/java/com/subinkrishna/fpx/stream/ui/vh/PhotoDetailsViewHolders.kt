@@ -22,7 +22,9 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.subinkrishna.fpx.R
+import com.subinkrishna.fpx.ext.cameraDetails
 import com.subinkrishna.fpx.ext.displayDate
+import com.subinkrishna.fpx.ext.locationDetails
 import com.subinkrishna.fpx.service.model.Photo
 import java.text.DecimalFormat
 
@@ -43,15 +45,12 @@ class PhotoTitleViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
 
     private val titleText: TextView = v.findViewById(R.id.photoTitle)
     private val usernameText: TextView = v.findViewById(R.id.username)
-    private val dateText: TextView = v.findViewById(R.id.date)
 
     override fun bind(item: Photo?) {
         titleText.text = item?.name
         titleText.isVisible = !item?.name.isNullOrBlank()
         usernameText.text = item?.user?.username
         usernameText.isVisible = !item?.user?.username.isNullOrBlank()
-        dateText.text = item?.displayDate
-        dateText.isVisible = !item?.displayDate.isNullOrBlank()
     }
 }
 
@@ -78,5 +77,56 @@ class PulseViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
     private fun format(count: Int): String {
         val formatter = DecimalFormat("#,###,###")
         return formatter.format(count)
+    }
+}
+
+/** Camera */
+class CameraDetailsViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
+    companion object {
+        fun create(parent: ViewGroup): CameraDetailsViewHolder {
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.view_photo_details_camera, parent, false)
+            return CameraDetailsViewHolder(v)
+        }
+    }
+
+    private val viewCountText: TextView = v.findViewById(R.id.cameraSettings)
+
+    override fun bind(item: Photo?) {
+        viewCountText.text = item?.cameraDetails
+    }
+}
+
+/** Date & time */
+class DateDetailsViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
+    companion object {
+        fun create(parent: ViewGroup): DateDetailsViewHolder {
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.view_photo_details_date, parent, false)
+            return DateDetailsViewHolder(v)
+        }
+    }
+
+    private val dateText: TextView = v.findViewById(R.id.date)
+
+    override fun bind(item: Photo?) {
+        dateText.text = item?.displayDate
+    }
+}
+
+/** Location */
+class LocationDetailsViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
+    companion object {
+        fun create(parent: ViewGroup): LocationDetailsViewHolder {
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.view_photo_details_location, parent, false)
+            return LocationDetailsViewHolder(v)
+        }
+    }
+
+    private val viewCountText: TextView = v.findViewById(R.id.location)
+
+    override fun bind(item: Photo?) {
+        viewCountText.text = item?.locationDetails
     }
 }

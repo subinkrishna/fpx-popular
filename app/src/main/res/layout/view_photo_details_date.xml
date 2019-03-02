@@ -12,10 +12,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_photo_camera_black_24dp"/>
+            android:src="@drawable/ic_date_range_24dp"/>
 
     <TextView
-            android:id="@+id/cameraSettings"
+            android:id="@+id/date"
             style="?attr/mediumTextAppearance"
             android:layout_marginStart="50sp"
             android:layout_width="match_parent"
