@@ -6,5 +6,6 @@
 
     <!-- A11y -->
     <string name="a11y_close">Close</string>
+    <string name="a11y_info">More information</string>
 
 </resources>

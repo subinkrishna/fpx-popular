@@ -10,14 +10,14 @@
             android:id="@+id/photoGrid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/photo_stream_toolbar_height"
             android:padding="@dimen/grid_spacing"
             android:clipToPadding="false"/>
 
     <TextView
             android:id="@+id/titleText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/photo_stream_toolbar_height"
             android:paddingStart="16dp"
             android:gravity="center_vertical|start"
             android:paddingEnd="16dp"

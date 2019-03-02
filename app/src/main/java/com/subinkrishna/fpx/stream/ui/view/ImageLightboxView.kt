@@ -24,6 +24,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import com.github.chrisbanes.photoview.PhotoView
 import com.subinkrishna.fpx.R
+import com.subinkrishna.fpx.ext.largeImage
 import com.subinkrishna.fpx.ktx.setImageUrl
 import com.subinkrishna.fpx.service.model.Photo
 
@@ -55,14 +56,12 @@ class ImageLightboxView @JvmOverloads constructor(
     }
 
     fun bind(item: Photo?) {
-        // todo: pick the 1080 version
-        val url = item?.images?.get(1)?.url
         val avatarUrl = item?.user?.avatar
         val username = item?.user?.username
         val title = item?.name
 
         imageView.setImageUrl(
-            url = url)
+            url = item?.largeImage)
         avatarView.setImageUrl(
             url = avatarUrl,
             centerCrop = true,

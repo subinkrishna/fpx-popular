@@ -31,8 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.subinkrishna.fpx.R
-import com.subinkrishna.fpx.service.impl.NetworkPhotoApi
-import com.subinkrishna.fpx.service.model.Photo
+import com.subinkrishna.fpx.di.ServiceLocator
 import com.subinkrishna.fpx.stream.model.PhotoStreamViewModel
 import com.subinkrishna.fpx.stream.model.ViewState
 import com.subinkrishna.fpx.stream.ui.view.PhotoStreamAdapter
@@ -65,7 +64,7 @@ class PhotoStreamFragment : Fragment() {
         activity?.run {
             val factory = PhotoStreamViewModel.Factory(
                 app = application,
-                api = NetworkPhotoApi()
+                api = ServiceLocator.get().api()
             )
             ViewModelProviders.of(this, factory)[PhotoStreamViewModel::class.java]
         } ?: throw IllegalStateException("Activity cannot be null")
