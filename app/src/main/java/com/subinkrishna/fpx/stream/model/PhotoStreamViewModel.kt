@@ -57,7 +57,8 @@ class PhotoStreamViewModel(
     private val dataSourceFactory = PagedStreamDataSource.Factory(
         api, feature, disposables)
 
-    val networkState = switchMap(dataSourceFactory.dataSourceLive) {
+    // LiveData that holds the network state (any page
+    val networkState: LiveData<NetworkState> = switchMap(dataSourceFactory.dataSourceLive) {
         it.networkStateLive
     }
 

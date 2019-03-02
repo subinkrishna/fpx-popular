@@ -6,13 +6,20 @@
         android:layout_height="match_parent"
         tools:context=".stream.ui.PhotoStreamActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/photoGrid"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/photo_stream_toolbar_height"
-            android:padding="@dimen/grid_spacing"
-            android:clipToPadding="false"/>
+            android:layout_marginTop="@dimen/photo_stream_toolbar_height">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photoGrid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/grid_spacing"
+                android:clipToPadding="false"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
             android:id="@+id/titleText"

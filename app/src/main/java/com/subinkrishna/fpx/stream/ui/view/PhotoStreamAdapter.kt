@@ -109,6 +109,11 @@ class PhotoStreamAdapter(
 
     /** Checks if an extra row is needed */
     private fun hasExtraRow(): Boolean {
-        return networkState != null && networkState != NetworkState.Ready
+        return networkState != null &&
+                // Need an extra row only if:
+                // - there is an error or
+                // - a page except the first one is loading
+                (networkState !is NetworkState.Ready ||
+                (networkState is NetworkState.Loading && networkState?.page != 1))
     }
 }

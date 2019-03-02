@@ -44,7 +44,7 @@ class NetworkStateViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     private val networkStatusText = v.findViewById<TextView>(R.id.networkStateErrorText)
 
     fun bind(state: NetworkState?) {
-        networkProgressBar.isVisible = state == NetworkState.Loading
-        networkStatusText.isVisible = state == NetworkState.Error
+        networkProgressBar.isVisible = state is NetworkState.Loading && state.page > 1
+        networkStatusText.isVisible = state is NetworkState.Error
     }
 }
