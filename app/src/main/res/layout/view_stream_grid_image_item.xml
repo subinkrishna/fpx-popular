@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
-                android:textStyle="bold"
                 android:textColor="@color/darkGrey"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"

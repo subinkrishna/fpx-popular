@@ -124,7 +124,14 @@ class PhotoExtTest {
             .isEqualTo("camera\n" +
                     "f/1.8 100mm")
 
-        // Camera with no camera info
+        // With only camera name
+        val photoWithOnlyCameraName = photo.copy(
+            camera = "camera ", lens = null,
+            aperture = "", shutterSpeed = null, iso = null, focalLength = ""
+        )
+        assertThat(photoWithOnlyCameraName.cameraDetails).isEqualTo("camera")
+
+        // With no camera info
         val photoWithNoCameraInfo = photo.copy(
             camera = "", lens = null,
             aperture = "", shutterSpeed = null, iso = null, focalLength = ""

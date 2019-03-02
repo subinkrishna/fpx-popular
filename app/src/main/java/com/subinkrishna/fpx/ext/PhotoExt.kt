@@ -60,6 +60,7 @@ val Photo.cameraDetails: String
             .append(camera.emptyIfNull())
             .appendIfNotEmpty(separator)
             .append(lens.emptyIfNull())
+
         val settings = StringBuilder()
             .append(aperture.emptyIfNull(prefix = "f/"))
             .appendIfNotEmpty(separator)
@@ -68,11 +69,12 @@ val Photo.cameraDetails: String
             .append(focalLength.emptyIfNull(suffix = "mm"))
             .appendIfNotEmpty(separator)
             .append(iso.emptyIfNull(prefix = "ISO "))
-        return StringBuilder()
-            .append(cameraLens.toString().trim())
-            .appendIfNotEmpty("\n")
-            .append(settings.toString().trim())
-            .toString()
+
+        return StringBuilder().apply {
+            append(cameraLens.toString().trim())
+            if (!settings.isNullOrBlank()) appendIfNotEmpty("\n")
+            append(settings.toString().trim())
+        }.toString()
     }
 
 /** Returns formatted location details */
