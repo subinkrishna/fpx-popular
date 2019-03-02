@@ -34,7 +34,6 @@ class PhotoDetailsAdapter : RecyclerView.Adapter<BaseDetailsItemViewHolder>() {
         private const val TYPE_CAMERA = 2
         private const val TYPE_LOCATION = 3
         private const val TYPE_DATE = 4
-
     }
 
     private var photo: Photo? = null

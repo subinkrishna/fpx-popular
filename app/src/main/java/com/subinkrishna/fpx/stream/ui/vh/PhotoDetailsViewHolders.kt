@@ -15,9 +15,12 @@
  */
 package com.subinkrishna.fpx.stream.ui.vh
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,8 @@ import com.subinkrishna.fpx.R
 import com.subinkrishna.fpx.ext.cameraDetails
 import com.subinkrishna.fpx.ext.displayDate
 import com.subinkrishna.fpx.ext.locationDetails
+import com.subinkrishna.fpx.ktx.clipToRoundRect
+import com.subinkrishna.fpx.ktx.setImageUrl
 import com.subinkrishna.fpx.service.model.Photo
 import java.text.DecimalFormat
 
@@ -43,14 +48,30 @@ class PhotoTitleViewHolder(v: View) : BaseDetailsItemViewHolder(v) {
         }
     }
 
+    private val cornerRadius by lazy {
+        v.context.resources.getDimensionPixelSize(R.dimen.photo_corner_radius)
+    }
+    private val avatarView: ImageView = v.findViewById(R.id.avatar)
     private val titleText: TextView = v.findViewById(R.id.photoTitle)
     private val usernameText: TextView = v.findViewById(R.id.username)
+    private val descriptionText: TextView = v.findViewById(R.id.description)
 
     override fun bind(item: Photo?) {
         titleText.text = item?.name
         titleText.isVisible = !item?.name.isNullOrBlank()
         usernameText.text = item?.user?.username
         usernameText.isVisible = !item?.user?.username.isNullOrBlank()
+
+        val avatarUrl = item?.user?.avatar
+        avatarView.clipToRoundRect(cornerRadius.toFloat())
+        avatarView.setImageUrl(
+            url = avatarUrl,
+            centerCrop = true,
+            placeHolderRes = R.drawable.placeholder_media_thumbnail)
+
+        val description = Html.fromHtml(item?.description.orEmpty()).toString()
+        descriptionText.text = description
+        descriptionText.isVisible = !item?.description.isNullOrBlank()
     }
 }
 

@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.LayoutParams
+import com.subinkrishna.fpx.ktx.clipToRoundRect
 import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.model.NetworkState
 import com.subinkrishna.fpx.stream.ui.vh.ImageItemViewHolder
@@ -27,6 +28,7 @@ import com.subinkrishna.fpx.stream.ui.vh.NetworkStateViewHolder
 
 /** Photo stream adapter */
 class PhotoStreamAdapter(
+    private val cornerRadius: Int = 0,
     private val itemClickListener: View.OnClickListener,
     private val retryButtonClickListener: View.OnClickListener
 ) : PagedListAdapter<Photo, RecyclerView.ViewHolder>(PhotoDiff()) {
@@ -51,6 +53,7 @@ class PhotoStreamAdapter(
             else -> {
                 ImageItemViewHolder.create(parent).also {
                     it.itemView.setOnClickListener(itemClickListener)
+                    it.imageView.clipToRoundRect(cornerRadius.toFloat())
                 }
             }
         }

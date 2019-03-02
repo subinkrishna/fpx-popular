@@ -27,6 +27,7 @@ import kotlinx.android.parcel.Parcelize
 data class Photo(
     val id: Long,
     val name: String,
+    val description: String?,
     val width: Int,
     val height: Int,
     val images: List<Image>,

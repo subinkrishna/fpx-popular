@@ -21,7 +21,7 @@ import com.subinkrishna.fpx.service.model.Photo
 import com.subinkrishna.fpx.stream.ui.vh.ImageLightboxItemViewHolder
 
 /** Photo pager adapter */
-class PagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(PhotoDiff()) {
+class LightboxPagerAdapter : PagedListAdapter<Photo, ImageLightboxItemViewHolder>(PhotoDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageLightboxItemViewHolder {
         return ImageLightboxItemViewHolder.create(parent)
