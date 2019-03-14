@@ -33,7 +33,11 @@ fun ImageView.setImageUrl(
         centerCrop: Boolean = false,
         @DrawableRes placeHolderRes: Int = -1
 ) {
-    val request = Picasso.get().load(url)
+    val picasso = Picasso.get()
+    // Enable indicators in debug mode
+    if (BuildConfig.DEBUG) picasso.setIndicatorsEnabled(true)
+    // Construct the request
+    val request = picasso.load(url)
     request.apply {
         if (placeHolderRes != -1) placeholder(placeHolderRes)
         if (centerCrop) centerCrop() else centerInside()
